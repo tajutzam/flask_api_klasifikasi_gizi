@@ -1,11 +1,16 @@
 from flask import Flask, request, jsonify
 import pickle
 import numpy as np
+import os
 
 app = Flask(__name__)
 
 # Load model
-with open('decision_tree_model.pkl', 'rb') as f:
+
+model_path = os.path.join(os.path.dirname(__file__), 'decision_tree_model.pkl')
+
+
+with open(model_path, 'rb') as f:
     model = pickle.load(f)
 
 # === MAPPING KATEGORI === #
