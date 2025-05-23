@@ -7,11 +7,11 @@ app = Flask(__name__)
 
 # Load model
 
-model_path = os.path.join(os.path.dirname(__file__), 'decision_tree_model.pkl')
+import joblib
 
+model_path = os.path.join(os.path.dirname(__file__), 'model_gizi_anak.pkl')
 
-with open(model_path, 'rb') as f:
-    model = pickle.load(f)
+model = joblib.load(model_path)
 
 # === MAPPING KATEGORI === #
 durasi_olahraga_map = {
@@ -163,7 +163,7 @@ def predict():
         return jsonify({'error': 'Input numerik tidak valid'}), 400
 
     # Buat array input
-    features = [usia, gender, berat, tinggi, lingkar, makan, durasi_olahraga, jenis_olahraga, tidur]
+    features = [usia, gender, tinggi, berat]
     input_array = np.array(features).reshape(1, -1)
 
     # Mengambil probabilitas untuk setiap kelas
@@ -192,3 +192,6 @@ def index():
 
 def handler(environ, start_response):
     return app(environ, start_response)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)
